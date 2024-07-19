@@ -1,8 +1,9 @@
 import os
 import sys
+
 import cv2
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # noqa
 from emotion_processor.main import EmotionRecognitionSystem
 
 process = EmotionRecognitionSystem()
@@ -22,5 +23,3 @@ if __name__ == "__main__":
 
     cap.release()
     cv2.destroyAllWindows()
-
-
