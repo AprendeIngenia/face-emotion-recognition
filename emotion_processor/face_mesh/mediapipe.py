@@ -5,10 +5,6 @@ import mediapipe as mp
 import numpy as np
 
 
-def draw_points(face_image, x, y):
-    cv2.circle(face_image, (x, y), 3, (0, 0, 0), -1)
-
-
 class FaceMeshMediapipe:
     def __init__(self):
         self.mp_draw = mp.solutions.drawing_utils
@@ -28,6 +24,15 @@ class FaceMeshMediapipe:
         self.mesh_points: list = []
 
         self.expected_face_points = 478
+
+    @staticmethod
+    def draw_points(face_image, points):
+        for x, y in points:
+            cv2.circle(face_image, (x, y), 3, (0, 0, 0), -1)
+
+    @staticmethod
+    def get_points(face_points, indices):
+        return [face_points[i][1:] for i in indices]
 
     def face_mesh_inference(self, face_image: np.ndarray) -> Tuple[bool, Any]:
         rgb_image = cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB)
@@ -60,11 +65,8 @@ class FaceMeshMediapipe:
             right_eyebrow_indices = [46, 53, 52, 65, 55]
             left_eyebrow_indices = [276, 283, 282, 295, 285]
 
-            def get_eyebrow_points(indices):
-                return [face_points[i][1:] for i in indices]
-
-            right_eyebrow_points = get_eyebrow_points(right_eyebrow_indices)
-            left_eyebrow_points = get_eyebrow_points(left_eyebrow_indices)
+            right_eyebrow_points = self.get_points(face_points, right_eyebrow_indices)
+            left_eyebrow_points = self.get_points(face_points, left_eyebrow_indices)
 
             self.eye_brows_points['right_eyebrow'] = [point for point in right_eyebrow_points]
             self.eye_brows_points['left_eyebrow'] = [point for point in left_eyebrow_points]
@@ -72,32 +74,27 @@ class FaceMeshMediapipe:
             self.eye_brows_points['eyebrows'] = self.eye_brows_points['right_eyebrow'] + self.eye_brows_points['left_eyebrow']
 
             if draw:
-                for x, y in self.eye_brows_points['eyebrows']:
-                    draw_points(face_image, x, y)
+                self.draw_points(face_image, self.eye_brows_points['eyebrows'])
         else:
             raise Exception(f"face_points len: {len(face_points)} != {self.expected_face_points}")
 
         return self.eye_brows_points
 
     def extract_eyes_points(self, face_points: list, face_image: np.ndarray, draw: bool = False) -> dict:
-        self.eyes_points = {'right_eye': [], 'left_eye': []}
+        self.eyes_points = {}
         if len(face_points) == self.expected_face_points:
             right_eye_indices = [130, 246, 161, 160, 159, 158, 157, 173, 155]
             left_eye_indices = [263, 466, 388, 387, 386, 385, 384, 398, 362]
 
-            def get_eye_points(indices):
-                return [face_points[i][1:] for i in indices]
+            right_eye_points = self.get_points(face_points, right_eye_indices)
+            left_eye_points = self.get_points(face_points, left_eye_indices)
 
-            right_eye_points = get_eye_points(right_eye_indices)
-            left_eye_points = get_eye_points(left_eye_indices)
+            self.eyes_points['right_eye'] = [coord for point in right_eye_points for coord in point]
+            self.eyes_points['left_eye'] = [coord for point in left_eye_points for coord in point]
 
-            self.eyes_points['right_eye'].append([coord for point in right_eye_points for coord in point])
-            self.eyes_points['left_eye'].append([coord for point in left_eye_points for coord in point])
-
-            self.eye_brows_points['eyes'] = self.eye_brows_points['right_eye'] + self.eye_brows_points['left_eye']
+            self.eye_brows_points['eyes'] = self.eyes_points['right_eye'] + self.eyes_points['left_eye']
             if draw:
-                for x, y in self.eye_brows_points['eyes']:
-                    draw_points(face_image, x, y)
+                self.draw_points(face_image, self.eye_brows_points['eyes'])
         else:
             raise Exception(f"face_points len: {len(face_points)} != {face_points}")
 
@@ -109,19 +106,15 @@ class FaceMeshMediapipe:
             right_side_nose_indices = [37, 72, 38, 82]
             left_side_nose_indices = [267, 302, 268, 312]
 
-            def get_nose_points(indices):
-                return [face_points[i][1:] for i in indices]
+            right_nose_points = self.get_points(face_points, right_side_nose_indices)
+            left_nose_points = self.get_points(face_points, left_side_nose_indices)
 
-            right_nose_points = get_nose_points(right_side_nose_indices)
-            left_nose_points = get_nose_points(left_side_nose_indices)
+            self.nose_points['right_side_nose'] = [coord for point in right_nose_points for coord in point]
+            self.nose_points['left_side_nose'] = [coord for point in left_nose_points for coord in point]
 
-            self.nose_points['right_side_nose'].append([coord for point in right_nose_points for coord in point])
-            self.nose_points['left_side_nose'].append([coord for point in left_nose_points for coord in point])
-
-            self.eye_brows_points['sides_nose'] = self.eye_brows_points['right_side_nose'] + self.eye_brows_points['left_side_nose']
+            self.eye_brows_points['sides_nose'] = self.nose_points['right_side_nose'] + self.nose_points['left_side_nose']
             if draw:
-                for x, y in self.eye_brows_points['sides_nose']:
-                    draw_points(face_image, x, y)
+                self.draw_points(face_image, self.nose_points['sides_nose'])
         else:
             raise Exception(f"face_points len: {len(face_points)} != {self.expected_face_points}")
 
@@ -134,21 +127,17 @@ class FaceMeshMediapipe:
             lower_mouth_contour_indices = [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 306]
             mouth_opening_indices = [13, 14]
 
-            def get_mouth_points(indices):
-                return [face_points[i][1:] for i in indices]
+            upper_mouth_points = self.get_points(face_points, upper_mouth_contour_indices)
+            lower_mouth_points = self.get_points(face_points, lower_mouth_contour_indices)
+            mouth_opening_points = self.get_points(face_points, mouth_opening_indices)
 
-            upper_mouth_points = get_mouth_points(upper_mouth_contour_indices)
-            lower_mouth_points = get_mouth_points(lower_mouth_contour_indices)
-            mouth_opening_points = get_mouth_points(mouth_opening_indices)
+            self.mouth_points['upper_mouth_contour'] = [coord for point in upper_mouth_points for coord in point]
+            self.mouth_points['lower_mouth_contour'] = [coord for point in lower_mouth_points for coord in point]
+            self.mouth_points['mouth_contours'] = [coord for point in mouth_opening_points for coord in point]
 
-            self.mouth_points['upper_mouth_contour'].append([coord for point in upper_mouth_points for coord in point])
-            self.mouth_points['lower_mouth_contour'].append([coord for point in lower_mouth_points for coord in point])
-            self.mouth_points['mouth_contours'].append([coord for point in mouth_opening_points for coord in point])
-
-            self.eye_brows_points['mouth_contours'] = self.eye_brows_points['upper_mouth_contour'] + self.eye_brows_points['lower_mouth_contour']
+            self.eye_brows_points['mouth_contours'] = self.mouth_points['upper_mouth_contour'] + self.mouth_points['lower_mouth_contour']
             if draw:
-                for x, y in self.eye_brows_points['mouth_contours']:
-                    draw_points(face_image, x, y)
+                self.draw_points(face_image, self.mouth_points['mouth_contours'])
         else:
             raise Exception(f"face_points len: {len(face_points)} != {self.expected_face_points}")
 
