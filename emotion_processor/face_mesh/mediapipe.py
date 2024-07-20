@@ -1,7 +1,8 @@
-import numpy as np
+from typing import Any, Tuple
+
 import cv2
 import mediapipe as mp
-from typing import Any, Tuple
+import numpy as np
 
 
 class FaceMeshMediapipe:
@@ -88,8 +89,8 @@ class FaceMeshMediapipe:
             right_eye_points = get_eye_points(right_eye_indices)
             left_eye_points = get_eye_points(left_eye_indices)
 
-            self.eyes_points['right eye'].append([coord for point in right_eye_points for coord in point])
-            self.eyes_points['left eye'].append([coord for point in left_eye_points for coord in point])
+            self.eyes_points['right eye'] = [coord for point in right_eye_points for coord in point]
+            self.eyes_points['left eye'] = [coord for point in left_eye_points for coord in point]
 
         else:
             raise Exception(f"face_points len: {len(face_points)} != 278")
@@ -108,8 +109,8 @@ class FaceMeshMediapipe:
             right_nose_points = get_nose_points(right_side_nose_indices)
             left_nose_points = get_nose_points(left_side_nose_indices)
 
-            self.nose_points['right side nose'].append([coord for point in right_nose_points for coord in point])
-            self.nose_points['left side nose'].append([coord for point in left_nose_points for coord in point])
+            self.nose_points['right side nose'] = [coord for point in right_nose_points for coord in point]
+            self.nose_points['left side nose'] = [coord for point in left_nose_points for coord in point]
         else:
             raise Exception(f"face points len: {len(face_points)} != 278")
         return self.nose_points
@@ -128,9 +129,9 @@ class FaceMeshMediapipe:
             lower_mouth_points = get_mouth_points(lower_mouth_contour_indices)
             mouth_opening_points = get_mouth_points(mouth_opening_indices)
 
-            self.mouth_points['upper lips contour'].append([coord for point in upper_mouth_points for coord in point])
-            self.mouth_points['lower lips contour'].append([coord for point in lower_mouth_points for coord in point])
-            self.mouth_points['mouth opening'].append([coord for point in mouth_opening_points for coord in point])
+            self.mouth_points['upper lips contour'] = [coord for point in upper_mouth_points for coord in point]
+            self.mouth_points['lower lips contour'] = [coord for point in lower_mouth_points for coord in point]
+            self.mouth_points['mouth opening'] = [coord for point in mouth_opening_points for coord in point]
 
         else:
             raise Exception(f"face_points len: {len(face_points)} != 278")
