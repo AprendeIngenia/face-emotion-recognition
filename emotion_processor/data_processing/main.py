@@ -1,21 +1,21 @@
-from emotion_processor.data_processing.eyebrows_processing import EyeBrowsPointsProcessing
-from emotion_processor.data_processing.eyes_processing import EyesPointsProcessing
-from emotion_processor.data_processing.nose_processing import NosePointsProcessing
-from emotion_processor.data_processing.mouth_processing import MouthPointsProcessing
+from emotion_processor.data_processing.feature_processor import FeatureProcessor
+from emotion_processor.data_processing.eyebrows.eyebrows_processor import EyeBrowsProcessor
+from emotion_processor.data_processing.eyes.eyes_processor import EyesProcessor
+from emotion_processor.data_processing.nose.nose_processor import NoseProcessor
+from emotion_processor.data_processing.mouth.mouth_processor import MouthProcessor
 
 
 class PointsProcessing:
     def __init__(self):
-        self.eyes_brows = EyeBrowsPointsProcessing()
-        self.eyes = EyesPointsProcessing()
-        self.nose = NosePointsProcessing()
-        self.mouth = MouthPointsProcessing()
-        pass
+        self.processors: dict[str, FeatureProcessor] = {
+            'eye_brows': EyeBrowsProcessor(),
+            'eyes': EyesProcessor(),
+            'nose': NoseProcessor(),
+            'mouth': MouthProcessor()
+        }
 
-    def main(self, eye_brows_points: dict, eyes_points: dict, nose_points: dict, mouth_points: dict):
-        eyebrows_info = self.eyes_brows.main(eye_brows_points)
-        self.eyes.main(eyes_points)
-        self.nose.main(nose_points)
-        self.mouth.main(mouth_points)
-        print(f'\ninfo eyebrows: {eyebrows_info}')
+    def main(self, points: dict):
+        for feature, processor in self.processors.items():
+            feature_points = points.get(feature, {})
+            processor.process(feature_points)
 
