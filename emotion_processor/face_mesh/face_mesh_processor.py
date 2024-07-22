@@ -48,7 +48,7 @@ class FaceMeshExtractor:
             'eye_brows': {
                 'right arch': [46, 53, 52, 65, 55],
                 'left arch': [276, 283, 282, 295, 285],
-                'distances': [65, 468, 295, 473, 55, 285]
+                'distances': [65, 468, 295, 473, 69, 66, 299, 296, 55, 285]
             }
         }
         self.extract_feature_points(face_points, feature_indices)

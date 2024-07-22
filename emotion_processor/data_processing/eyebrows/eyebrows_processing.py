@@ -38,10 +38,15 @@ class EyeBrowsPointsProcessing:
             eyebrows_points['distances'][0], eyebrows_points['distances'][1])
         left_eyebrow_to_eye_distance = self.distance_calculator.calculate_distance(
             eyebrows_points['distances'][2], eyebrows_points['distances'][3])
-        distance_between_eyebrows = self.distance_calculator.calculate_distance(
+        right_eyebrow_to_forehead_distance = self.distance_calculator.calculate_distance(
             eyebrows_points['distances'][4], eyebrows_points['distances'][5])
+        left_eyebrow_to_forehead_distance = self.distance_calculator.calculate_distance(
+            eyebrows_points['distances'][6], eyebrows_points['distances'][7])
+        distance_between_eyebrows = self.distance_calculator.calculate_distance(
+            eyebrows_points['distances'][8], eyebrows_points['distances'][8])
 
-        return right_eyebrow_to_eye_distance, left_eyebrow_to_eye_distance, distance_between_eyebrows
+        return (right_eyebrow_to_eye_distance, left_eyebrow_to_eye_distance, right_eyebrow_to_forehead_distance,
+                left_eyebrow_to_forehead_distance, distance_between_eyebrows)
 
     def main(self, eyebrows_points: dict):
         # calculate eyebrow arch
@@ -51,9 +56,13 @@ class EyeBrowsPointsProcessing:
         self.eyebrows['arch_left'] = left_eyebrow_arch
 
         # calculate distance between eyebrow and its eye
-        right_eye_distance, left_eye_distance, eyebrows_distance = self.calculate_distances(eyebrows_points)
+        right_eye_distance, left_eye_distance, right_forehead_distance, left_forehead_distance, eyebrows_distance = (
+            self.calculate_distances(eyebrows_points))
         self.eyebrows['eye_right_distance'] = right_eye_distance
         self.eyebrows['eye_left_distance'] = left_eye_distance
+        self.eyebrows['forehead_right_distance'] = right_forehead_distance
+        self.eyebrows['forehead_left_distance'] = left_forehead_distance
         self.eyebrows['eyebrows_distance'] = eyebrows_distance
+        print(f'Eyebrows: {self.eyebrows}')
 
         return self.eyebrows
