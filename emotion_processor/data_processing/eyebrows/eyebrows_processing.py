@@ -35,18 +35,18 @@ class EyeBrowsPointsProcessing:
 
     def calculate_distances(self, eyebrows_points: dict):
         right_eyebrow_to_eye_distance = self.distance_calculator.calculate_distance(
-            eyebrows_points['distances'][0], eyebrows_points['distances'][1])
+            *eyebrows_points['distances']['right_eyebrow_to_eye'])
         left_eyebrow_to_eye_distance = self.distance_calculator.calculate_distance(
-            eyebrows_points['distances'][2], eyebrows_points['distances'][3])
+            *eyebrows_points['distances']['left_eyebrow_to_eye'])
         right_eyebrow_to_forehead_distance = self.distance_calculator.calculate_distance(
-            eyebrows_points['distances'][4], eyebrows_points['distances'][5])
+            *eyebrows_points['distances']['right_eyebrow_to_forehead'])
         left_eyebrow_to_forehead_distance = self.distance_calculator.calculate_distance(
-            eyebrows_points['distances'][6], eyebrows_points['distances'][7])
-        distance_between_eyebrows = self.distance_calculator.calculate_distance(
-            eyebrows_points['distances'][8], eyebrows_points['distances'][8])
+            *eyebrows_points['distances']['left_eyebrow_to_forehead'])
+        between_eyebrows_distance = self.distance_calculator.calculate_distance(
+            *eyebrows_points['distances']['between_eyebrows'])
 
         return (right_eyebrow_to_eye_distance, left_eyebrow_to_eye_distance, right_eyebrow_to_forehead_distance,
-                left_eyebrow_to_forehead_distance, distance_between_eyebrows)
+                left_eyebrow_to_forehead_distance, between_eyebrows_distance)
 
     def main(self, eyebrows_points: dict):
         # calculate eyebrow arch

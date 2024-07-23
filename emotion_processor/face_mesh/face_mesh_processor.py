@@ -23,8 +23,8 @@ class FaceMeshInference:
 class FaceMeshExtractor:
     def __init__(self):
         self.points: dict = {
-            'eye_brows': {'right arch': [], 'left arch': [], 'distances': []},
-            'eyes': {'right arch': [], 'left arch': [], 'distances': []},
+            'eye_brows': {'right arch': [], 'left arch': [], 'distances': {}},
+            'eyes': {'right arch': [], 'left arch': []},
             'nose': {'right': [], 'left': []},
             'mouth': {'upper': [], 'lower': [], 'opening': []}
         }
@@ -40,15 +40,28 @@ class FaceMeshExtractor:
 
     def extract_feature_points(self, face_points: List[List[int]], feature_indices: dict):
         for feature, indices in feature_indices.items():
-            for sub_feature, sub_indices in indices.items():
-                self.points[feature][sub_feature] = [face_points[i][1:] for i in sub_indices]
+            if isinstance(indices, dict):
+                for sub_feature, sub_indices in indices.items():
+                    if isinstance(sub_indices, dict):
+                        for sub_sub_feature, sub_sub_indices in sub_indices.items():
+                            self.points[feature][sub_feature][sub_sub_feature] = [face_points[i][1:] for i in sub_sub_indices]
+                    else:
+                        self.points[feature][sub_feature] = [face_points[i][1:] for i in sub_indices]
+            else:
+                self.points[feature] = [face_points[i][1:] for i in indices]
 
     def get_eye_brows_points(self, face_points: List[List[int]]) -> Dict[str, List[List[int]]]:
         feature_indices = {
             'eye_brows': {
                 'right arch': [46, 53, 52, 65, 55],
                 'left arch': [276, 283, 282, 295, 285],
-                'distances': [65, 468, 295, 473, 69, 66, 299, 296, 55, 285]
+                'distances': {
+                    "right_eyebrow_to_eye": [65, 468],
+                    "left_eyebrow_to_eye": [295, 473],
+                    "right_eyebrow_to_forehead": [299, 296],
+                    "between_eyebrows": [296, 55],
+                    "left_eyebrow_to_forehead": [55, 285],
+                }
             }
         }
         self.extract_feature_points(face_points, feature_indices)
