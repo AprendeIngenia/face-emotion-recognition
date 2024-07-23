@@ -24,7 +24,7 @@ class FaceMeshExtractor:
     def __init__(self):
         self.points: dict = {
             'eye_brows': {'right arch': [], 'left arch': [], 'distances': []},
-            'eyes': {'right': [], 'left': []},
+            'eyes': {'right arch': [], 'left arch': [], 'distances': []},
             'nose': {'right': [], 'left': []},
             'mouth': {'upper': [], 'lower': [], 'opening': []}
         }
@@ -57,8 +57,9 @@ class FaceMeshExtractor:
     def get_eyes_points(self, face_points: List[List[int]]) -> Dict[str, List[List[int]]]:
         feature_indices = {
             'eyes': {
-                'right': [130, 246, 161, 160, 159, 158, 157, 173, 155],
-                'left': [263, 466, 388, 387, 386, 385, 384, 398, 362]
+                'right arch': [33, 246, 161, 160, 159, 158, 157, 173, 133],
+                'left arch': [263, 398, 384, 385, 386, 387, 388, 466, 263],
+                'distances': [159, 145, 385, 374, 145, 230, 374, 450],
             }
         }
         self.extract_feature_points(face_points, feature_indices)
