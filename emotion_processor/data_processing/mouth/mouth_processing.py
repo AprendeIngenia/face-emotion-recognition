@@ -52,4 +52,5 @@ class MouthPointsProcessing:
         mouth_upper_distance, mouth_lower_distance = self.calculate_distances(mouth_points)
         self.mouth['mouth_upper_distance'] = mouth_upper_distance
         self.mouth['mouth_lower_distance'] = mouth_lower_distance
+        print(f'Mouth: { {k: (round(float(v), 4)) for k, v in self.mouth.items()} }')
         return self.mouth
