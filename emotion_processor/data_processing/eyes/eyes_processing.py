@@ -52,13 +52,14 @@ class EyesPointsProcessing:
         self.eyes['arch_right'] = right_eyes_arch
         self.eyes['arch_left'] = left_eyes_arch
 
-        # calculate distance between eyebrow and its eye
+        # calculate distance between eyes and its eyelids
         (right_upper_eyelid_distance, left_upper_eyelid_distance, right_lower_eyelid_distance,
          left_lower_eyelid_distance) = (self.calculate_distances(eyes_points))
         self.eyes['right_upper_eyelid_distance'] = right_upper_eyelid_distance
         self.eyes['left_upper_eyelid_distance'] = left_upper_eyelid_distance
         self.eyes['right_lower_eyelid_distance'] = right_lower_eyelid_distance
         self.eyes['left_lower_eyelid_distance'] = left_lower_eyelid_distance
+
 
         print(f'Eyes: { {k: (round(float(v),4)) for k,v in self.eyes.items()}}')
         return self.eyes
