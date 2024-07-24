@@ -25,8 +25,8 @@ class FaceMeshExtractor:
         self.points: dict = {
             'eye_brows': {'right arch': [], 'left arch': [], 'distances': []},
             'eyes': {'right arch': [], 'left arch': [], 'distances': []},
-            'nose': {'right': [], 'left': []},
-            'mouth': {'upper': [], 'lower': [], 'opening': []}
+            'nose': {'distances': []},
+            'mouth': {'upper arch': [], 'lower arch': [], 'distances': []}
         }
 
     def extract_points(self, face_image: np.ndarray, face_mesh_info: Any) -> List[List[int]]:
@@ -68,8 +68,7 @@ class FaceMeshExtractor:
     def get_nose_points(self, face_points: List[List[int]]) -> Dict[str, List[List[int]]]:
         feature_indices = {
             'nose': {
-                'right': [37, 72, 38, 82],
-                'left': [267, 302, 268, 312]
+                'distances': [0, 13, 2, 164],
             }
         }
         self.extract_feature_points(face_points, feature_indices)
@@ -78,9 +77,9 @@ class FaceMeshExtractor:
     def get_mouth_points(self, face_points: List[List[int]]) -> Dict[str, List[List[int]]]:
         feature_indices = {
             'mouth': {
-                'upper': [61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 306],
-                'lower': [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 306],
-                'opening': [13, 14]
+                'upper arch': [78, 191, 80, 81, 82, 13, 312, 311, 310, 415, 308],
+                'lower arch': [78, 95, 88, 178, 87, 14, 317, 402, 318, 324, 308],
+                'distances': [13, 14, 17, 200]
             }
         }
         self.extract_feature_points(face_points, feature_indices)
