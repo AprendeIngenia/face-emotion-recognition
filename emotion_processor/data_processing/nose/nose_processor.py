@@ -9,4 +9,4 @@ class NoseProcessor(FeatureProcessor):
         self.processor = NosePointsProcessing(distance_calculator)
 
     def process(self, points: dict):
-        self.processor.main(points)
+        return self.processor.main(points)
