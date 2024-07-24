@@ -11,4 +11,4 @@ class EyesProcessor(FeatureProcessor):
         self.processor = EyesPointsProcessing(arch_calculator, distance_calculator)
 
     def process(self, points: dict):
-        self.processor.main(points)
+        return self.processor.main(points)

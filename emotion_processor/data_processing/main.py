@@ -13,9 +13,12 @@ class PointsProcessing:
             'nose': NoseProcessor(),
             'mouth': MouthProcessor()
         }
+        self.processed_points: dict = {}
 
     def main(self, points: dict):
+        self.processed_points = {}
         for feature, processor in self.processors.items():
             feature_points = points.get(feature, {})
-            processor.process(feature_points)
+            self.processed_points[feature] = processor.process(feature_points)
+        return self.processed_points
 
