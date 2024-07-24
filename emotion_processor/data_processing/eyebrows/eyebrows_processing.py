@@ -63,4 +63,6 @@ class EyeBrowsPointsProcessing:
         self.eyebrows['forehead_right_distance'] = right_forehead_distance
         self.eyebrows['forehead_left_distance'] = left_forehead_distance
         self.eyebrows['eyebrows_distance'] = eyebrows_distance
+        print(f'Eyebrows: { {k: (round(float(v),4)) for k,v in self.eyebrows.items()}}')
+
         return self.eyebrows

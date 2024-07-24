@@ -59,4 +59,7 @@ class EyesPointsProcessing:
         self.eyes['left_upper_eyelid_distance'] = left_upper_eyelid_distance
         self.eyes['right_lower_eyelid_distance'] = right_lower_eyelid_distance
         self.eyes['left_lower_eyelid_distance'] = left_lower_eyelid_distance
+
+
+        print(f'Eyes: { {k: (round(float(v),4)) for k,v in self.eyes.items()}}')
         return self.eyes
