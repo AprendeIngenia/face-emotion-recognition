@@ -31,5 +31,5 @@ class NosePointsProcessing:
         mouth_upper_distance, nose_lower_distance = self.calculate_distances(mouth_points)
         self.nose['mouth_upper_distance'] = mouth_upper_distance
         self.nose['nose_lower_distance'] = nose_lower_distance
-        print(self.nose)
+        print(f'Nose: { {k: (round(float(v), 4)) for k, v in self.nose.items()} }')
         return self.nose
