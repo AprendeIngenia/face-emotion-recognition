@@ -43,10 +43,12 @@ class EyeBrowsPointsProcessing:
         left_eyebrow_to_forehead_distance = self.distance_calculator.calculate_distance(
             eyebrows_points['distances'][6], eyebrows_points['distances'][7])
         distance_between_eyebrows = self.distance_calculator.calculate_distance(
-            eyebrows_points['distances'][8], eyebrows_points['distances'][8])
+            eyebrows_points['distances'][8], eyebrows_points['distances'][9])
+        distance_between_eyebrow_forehead = self.distance_calculator.calculate_distance(
+            eyebrows_points['distances'][10], eyebrows_points['distances'][11])
 
         return (right_eyebrow_to_eye_distance, left_eyebrow_to_eye_distance, right_eyebrow_to_forehead_distance,
-                left_eyebrow_to_forehead_distance, distance_between_eyebrows)
+                left_eyebrow_to_forehead_distance, distance_between_eyebrows, distance_between_eyebrow_forehead)
 
     def main(self, eyebrows_points: dict):
         # calculate eyebrow arch
@@ -56,12 +58,13 @@ class EyeBrowsPointsProcessing:
         self.eyebrows['arch_left'] = left_eyebrow_arch
 
         # calculate distance between eyebrow and its eye
-        right_eye_distance, left_eye_distance, right_forehead_distance, left_forehead_distance, eyebrows_distance = (
-            self.calculate_distances(eyebrows_points))
+        (right_eye_distance, left_eye_distance, right_forehead_distance, left_forehead_distance, eyebrows_distance,
+         eyebrow_distance_forehead) = (self.calculate_distances(eyebrows_points))
         self.eyebrows['eye_right_distance'] = right_eye_distance
         self.eyebrows['eye_left_distance'] = left_eye_distance
         self.eyebrows['forehead_right_distance'] = right_forehead_distance
         self.eyebrows['forehead_left_distance'] = left_forehead_distance
         self.eyebrows['eyebrows_distance'] = eyebrows_distance
+        self.eyebrows['eyebrow_distance_forehead'] = eyebrow_distance_forehead
         #print(f'Eyebrows: { {k: (round(float(v),4)) for k,v in self.eyebrows.items()}}')
         return self.eyebrows
