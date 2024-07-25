@@ -8,7 +8,7 @@ from emotion_processor.data_processing.mouth.mouth_processor import MouthProcess
 class PointsProcessing:
     def __init__(self):
         self.processors: dict[str, FeatureProcessor] = {
-            'eye_brows': EyeBrowsProcessor(),
+            'eyebrows': EyeBrowsProcessor(),
             'eyes': EyesProcessor(),
             'nose': NoseProcessor(),
             'mouth': MouthProcessor()

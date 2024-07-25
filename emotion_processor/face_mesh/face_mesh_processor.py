@@ -23,7 +23,7 @@ class FaceMeshInference:
 class FaceMeshExtractor:
     def __init__(self):
         self.points: dict = {
-            'eye_brows': {'right arch': [], 'left arch': [], 'distances': []},
+            'eyebrows': {'right arch': [], 'left arch': [], 'distances': []},
             'eyes': {'right arch': [], 'left arch': [], 'distances': []},
             'nose': {'distances': []},
             'mouth': {'upper arch': [], 'lower arch': [], 'distances': []}
@@ -43,16 +43,16 @@ class FaceMeshExtractor:
             for sub_feature, sub_indices in indices.items():
                 self.points[feature][sub_feature] = [face_points[i][1:] for i in sub_indices]
 
-    def get_eye_brows_points(self, face_points: List[List[int]]) -> Dict[str, List[List[int]]]:
+    def get_eyebrows_points(self, face_points: List[List[int]]) -> Dict[str, List[List[int]]]:
         feature_indices = {
-            'eye_brows': {
-                'right arch': [46, 53, 52, 65, 55],
-                'left arch': [276, 283, 282, 295, 285],
-                'distances': [65, 468, 295, 473, 69, 66, 299, 296, 55, 285]
+            'eyebrows': {
+                'right arch': [143, 156, 70, 63, 105, 66, 107],
+                'left arch': [336, 296, 334, 293, 300, 383, 372],
+                'distances': [65, 468, 295, 473, 69, 66, 299, 296, 55, 8, 70, 21]
             }
         }
         self.extract_feature_points(face_points, feature_indices)
-        return self.points['eye_brows']
+        return self.points['eyebrows']
 
     def get_eyes_points(self, face_points: List[List[int]]) -> Dict[str, List[List[int]]]:
         feature_indices = {
@@ -111,7 +111,7 @@ class FaceMeshProcessor:
 
         face_points = self.extractor.extract_points(face_image, face_mesh_info)
         points = {
-            'eye_brows': self.extractor.get_eye_brows_points(face_points),
+            'eyebrows': self.extractor.get_eyebrows_points(face_points),
             'eyes': self.extractor.get_eyes_points(face_points),
             'nose': self.extractor.get_nose_points(face_points),
             'mouth': self.extractor.get_mouth_points(face_points)
