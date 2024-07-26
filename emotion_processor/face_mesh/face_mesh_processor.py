@@ -119,5 +119,6 @@ class FaceMeshProcessor:
 
         if draw:
             self.drawer.draw(face_image, face_mesh_info)
+            return points, True, face_image
 
         return points, True, original_image

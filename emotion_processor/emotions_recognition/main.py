@@ -23,5 +23,4 @@ class EmotionRecognition:
         scores = {}
         for emotion_name, emotion_score_obj in self.emotions.items():
             scores.update(emotion_score_obj.calculate_score(processed_features))
-        print(scores)
         return scores
