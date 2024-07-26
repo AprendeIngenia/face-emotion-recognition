@@ -15,7 +15,7 @@ class VideoStream:
         while True:
             ret, frame = self.camera.read()
             if ret:
-                self.emotion_recognition_system.frame_processing(frame)
+                frame = self.emotion_recognition_system.frame_processing(frame)
                 cv2.imshow('Emotion Recognition', frame)
                 t = cv2.waitKey(5)
                 if t == 27:
