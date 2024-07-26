@@ -1,24 +1,36 @@
-from emotion_processor.emotions_recognition.features.emotion_score import EmotionScore
-from emotion_processor.emotions_recognition.features.feature_implementation import (BasicEyebrowsCheck, BasicEyesCheck,
-                                                                                    BasicNoseCheck, BasicMouthCheck)
+from emotion_processor.emotions_recognition.features.weights_emotion_score import WeightedEmotionScore
 
 
-class SurpriseScore(EmotionScore):
+class SurpriseScore(WeightedEmotionScore):
     def __init__(self):
-        self.eyebrows_check = BasicEyebrowsCheck()
-        self.eyes_check = BasicEyesCheck()
-        self.nose_check = BasicNoseCheck()
-        self.mouth_check = BasicMouthCheck()
+        super().__init__(eyebrows_weight=0.40, eyes_weight=0.25, nose_weight=0.1, mouth_weight=0.25)
 
-    def calculate_score(self, features: dict) -> float:
+    def calculate_eyebrows_score(self, eyebrows_result: str) -> float:
         score = 0.0
-        eyebrows_result = self.eyebrows_check.check_eyebrows(features['eyebrows'])
-        eyes_result = self.eyes_check.check_eyes(features['eyes'])
-        nose_result = self.nose_check.check_nose(features['nose'])
-        mouth_result = self.mouth_check.check_mouth(features['mouth'])
+        if 'eyebrows separated' in eyebrows_result:
+            score += 10.0
+        if 'right eyebrow: raised' in eyebrows_result:
+            score += 45.0
+        if 'left eyebrow: raised' in eyebrows_result:
+            score += 45.0
+        return score
 
-        #print(f"Eyebrows Check: {eyebrows_result}")
-        #print(f"Eyes Check: {eyes_result}")
-        #print(f"Nose Check: {nose_result}")
-        #print(f"Mouth Check: {mouth_result}")
+    def calculate_eyes_score(self, eyes_result: str) -> float:
+        if 'open eyes' in eyes_result:
+            return 100.0
+        return 0.0
+
+    def calculate_nose_score(self, nose_result: str) -> float:
+        if 'neutral nose' in nose_result:
+            return 100.0
+        return 0.0
+
+    def calculate_mouth_score(self, mouth_result: str) -> float:
+        score = 0.0
+        if 'open mouth' in mouth_result:
+            score += 60.0
+        if 'no right smile' in mouth_result:
+            score += 20.0
+        if 'no left smile' in mouth_result:
+            score += 20.0
         return score

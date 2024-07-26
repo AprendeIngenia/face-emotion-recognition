@@ -79,7 +79,7 @@ class FaceMeshExtractor:
             'mouth': {
                 'upper arch': [78, 191, 80, 81, 82, 13, 312, 311, 310, 415, 308],
                 'lower arch': [78, 95, 88, 178, 87, 14, 317, 402, 318, 324, 308],
-                'distances': [13, 14, 17, 200]
+                'distances': [13, 14, 17, 200, 78, 186, 61, 95, 308, 410, 291, 324]
             }
         }
         self.extract_feature_points(face_points, feature_indices)

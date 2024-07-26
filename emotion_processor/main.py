@@ -15,10 +15,5 @@ class EmotionRecognitionSystem:
         if control_process:
             processed_features = self.data_processing.main(face_points)
             emotion = self.emotions_recognition.recognize_emotion(processed_features)
-            #self.print_results(processed_features)
         else:
             Exception(f"No face mesh")
-
-    def print_results(self, processed_points: dict):
-        for feature, results in processed_points.items():
-            print(f"Results for {feature}: {results}")
