@@ -38,8 +38,16 @@ class MouthPointsProcessing:
             eyebrows_points['distances'][0], eyebrows_points['distances'][1])
         lower_mouth = self.distance_calculator.calculate_distance(
             eyebrows_points['distances'][2], eyebrows_points['distances'][3])
+        right_smile = self.distance_calculator.calculate_distance(
+            eyebrows_points['distances'][4], eyebrows_points['distances'][5])
+        right_lip = self.distance_calculator.calculate_distance(
+            eyebrows_points['distances'][6], eyebrows_points['distances'][7])
+        left_smile = self.distance_calculator.calculate_distance(
+            eyebrows_points['distances'][8], eyebrows_points['distances'][9])
+        left_lip = self.distance_calculator.calculate_distance(
+            eyebrows_points['distances'][10], eyebrows_points['distances'][11])
 
-        return upper_mouth, lower_mouth
+        return upper_mouth, lower_mouth, right_smile, right_lip, left_smile, left_lip
 
     def main(self, mouth_points: dict):
         # calculate eyebrow arch
@@ -49,8 +57,13 @@ class MouthPointsProcessing:
         self.mouth['lower_arch'] = lower_arch
 
         # calculate distance between lips
-        mouth_upper_distance, mouth_lower_distance = self.calculate_distances(mouth_points)
+        (mouth_upper_distance, mouth_lower_distance, right_smile_distance, right_lip_distance, left_smile_distance,
+         left_lip_distance) = self.calculate_distances(mouth_points)
         self.mouth['mouth_upper_distance'] = mouth_upper_distance
         self.mouth['mouth_lower_distance'] = mouth_lower_distance
+        self.mouth['right_smile_distance'] = right_smile_distance
+        self.mouth['right_lip_distance'] = right_lip_distance
+        self.mouth['left_smile_distance'] = left_smile_distance
+        self.mouth['left_lip_distance'] = left_lip_distance
         #print(f'Mouth: { {k: (round(float(v), 4)) for k, v in self.mouth.items()} }')
         return self.mouth

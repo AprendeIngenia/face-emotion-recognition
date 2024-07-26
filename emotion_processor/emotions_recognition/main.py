@@ -5,7 +5,7 @@ from .emotions.angry_score import AngryScore
 from .emotions.disgust_score import DisgustScore
 from .emotions.sad_score import SadScore
 from .emotions.happy_score import HappyScore
-from .emotions.fear_Score import FearScore
+from .emotions.fear_score import FearScore
 
 
 class EmotionRecognition:
@@ -19,7 +19,9 @@ class EmotionRecognition:
             'fear': FearScore(),
         }
 
-    def recognize_emotion(self, processed_features: dict) -> str:
-        scores = {emotion: scorer.calculate_score(processed_features) for emotion, scorer in self.emotions.items()}
-        recognized_emotion = max(scores, key=scores.get)
-        return recognized_emotion
+    def recognize_emotion(self, processed_features: dict) -> dict:
+        scores = {}
+        for emotion_name, emotion_score_obj in self.emotions.items():
+            scores.update(emotion_score_obj.calculate_score(processed_features))
+        print(scores)
+        return scores

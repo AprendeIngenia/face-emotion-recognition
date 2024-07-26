@@ -1,4 +1,5 @@
-from emotion_processor.emotions_recognition.features.feature_check import EyebrowsCheck, EyesCheck, NoseCheck, MouthCheck
+from emotion_processor.emotions_recognition.features.feature_check import (EyebrowsCheck, EyesCheck, NoseCheck,
+                                                                           MouthCheck)
 
 
 class BasicEyebrowsCheck(EyebrowsCheck):
@@ -25,7 +26,7 @@ class BasicEyesCheck(EyesCheck):
             'right_lower_eyelid_distance']
         left_eyelid_upper, left_eyelid_lower = eyes['left_upper_eyelid_distance'], eyes['left_lower_eyelid_distance']
 
-        results = ['eyes open' if right_eyelid_upper > right_eyelid_lower else 'eyes closed']
+        results = ['open eyes' if right_eyelid_upper > right_eyelid_lower else 'closed eyes']
 
         return ', '.join(results)
 
@@ -39,6 +40,17 @@ class BasicNoseCheck(NoseCheck):
 
 class BasicMouthCheck(MouthCheck):
     def check_mouth(self, mouth: dict) -> str:
+        results = []
         lips_upper, lips_lower = mouth['mouth_upper_distance'], mouth['mouth_lower_distance']
+        right_smile, right_lip = mouth['right_smile_distance'], mouth['right_lip_distance']
+        left_smile, left_lip = mouth['left_smile_distance'], mouth['left_lip_distance']
 
-        return 'open mouth' if lips_upper > lips_lower else 'closed mouth'
+        if lips_upper > lips_lower:
+            results.append('open mouth')
+        else:
+            results.append('closed mouth')
+
+        results.append('right smile' if right_lip > right_smile else 'no right smile')
+        results.append('left smile' if left_lip > left_smile else 'no left smile')
+
+        return ', '.join(results)
