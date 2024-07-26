@@ -28,9 +28,9 @@ class SurpriseScore(WeightedEmotionScore):
     def calculate_mouth_score(self, mouth_result: str) -> float:
         score = 0.0
         if 'open mouth' in mouth_result:
-            score += 60.0
+            score += 80.0
         if 'no right smile' in mouth_result:
-            score += 20.0
+            score += 10.0
         if 'no left smile' in mouth_result:
-            score += 20.0
+            score += 10.0
         return score
